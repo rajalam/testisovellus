@@ -7,12 +7,12 @@ let nappaimet = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "C", "+", "-"
 function App() {
   const [teksti, setTeksti] = useState("")  //          [a,b]
 
-  //onko annettu jo aiemmin operaattori "+", "-", "*", "X"
+  //onko annettu jo aiemmin operaattori "+", "-", "*", "/"
   const [ekaOperaattori, setEkaOperaattori] = useState("")
 
   //tallettaa operandit1 ja 2
   const [operandi1, setOperandi1] = useState(0)
-  const [operandi2, setOperandi2] = useState(0)
+  const [operandi2, setOperandi2] = useState(false)
 
   const nappainPainettu = (x) => {
 
@@ -25,6 +25,10 @@ function App() {
     }
     else if (!isNaN(x)) { //jos syötetty nro
       console.log(x)
+
+      if( ekaOperaattori !== "" ) {
+        setOperandi2(true)
+      }
     }
     else if (x === "+" ||
       x === "-" ||
@@ -41,9 +45,6 @@ function App() {
           setTeksti(eval("0") + x)
         }
 
-        
-        
-
         if (operandi1 === 0) { //operandi1 ei asetettu
           setOperandi1(eval(teksti.valueOf()))
           //console.log("operandi1: "+eval(teksti.valueOf()))    
@@ -51,25 +52,36 @@ function App() {
 
       }
       else { //jotain syötetty jo aiemmin, pitää laskea välitulos
-                
-        if( ekaOperaattori !== "" ) {
+        
+        
+
+        if( ekaOperaattori === "" ) {
           setEkaOperaattori(x)
+          //console.log("isNan result: "+isNaN(x) + ", ekaoperaattori: "+ekaOperaattori)
         }
 
-        console.log("isNan result: "+isNaN(x))
-        
-        if( ! isNaN( x ) )
+        console.log("isNan result: "+isNaN(x) + ", ekaoperaattori: "+ekaOperaattori+
+        ", operandi2: "+ operandi2)
+
+        if( ekaOperaattori !== "" &&
+        ! operandi2 )
         { //syötetty kaksi operaattoria peräkkäin, vain tuoreempi huomioidaan
 
           //teksti.charAt(teksti.length - 1 ) 
           //korvataan uusin syötetty operaattori vanhalla
-          setTeksti(eval( teksti.substring(0, teksti.length -2 ) + x ))
-          
+          setTeksti( teksti.substring(0, teksti.length - 1 ) + x )
+          setEkaOperaattori(x)
+          setOperandi2(false)
+
           return
         }
         else {
         
-          setTeksti(eval(teksti) + x)
+          setTeksti(eval( teksti ) + x)
+          setEkaOperaattori(x)
+          setOperandi2(false)
+
+          return
           //setTeksti(teksti+x)  
         }
         
