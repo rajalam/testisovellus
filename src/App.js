@@ -91,7 +91,7 @@ function App() {
 
       if (operandi2) {
         setEkaOperaattori("")
-        operandi2(false)
+        setOperandi2(false)
         setTeksti(eval(teksti))
       }
       return
