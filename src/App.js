@@ -3,11 +3,82 @@ import './App.css';
 import { useState } from "react"
 import Nappain from './Nappain';
 
-let nappaimet = ["1", "2", "3", "4", "+", "-", "="]
+let nappaimet = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "C", "+", "-", "*", "/", "="]
 function App() {
   const [teksti, setTeksti] = useState("")  //          [a,b]
+
+  //onko annettu jo aiemmin operaattori "+", "-", "*", "X"
+  const [ekaOperaattori, setEkaOperaattori] = useState("")
+
+  //tallettaa operandit1 ja 2
+  const [operandi1, setOperandi1] = useState(0)
+  const [operandi2, setOperandi2] = useState(0)
+
   const nappainPainettu = (x) => {
-    if (x == "=") {
+
+    if (x === "C") {
+      setTeksti("")
+      setEkaOperaattori("")
+      setOperandi1(0)
+      setOperandi2(0)
+      return
+    }
+    else if (!isNaN(x)) { //jos syötetty nro
+      console.log(x)
+    }
+    else if (x === "+" ||
+      x === "-" ||
+      x === "*" ||
+      x === "/") {
+
+      if (teksti === "") { //jos ei ole aiemmin syötetty operaattoria 
+
+        //tähän pitäisi huomioida myös se case, että syötetty operandi+operaattori, mutta tän perään tulee
+        //taas operaattori syöte ->täs cases pitäis vanha operaattori korvata uusimmal painetulla
+
+        if(  ekaOperaattori === "" ) {
+          setEkaOperaattori(x)
+          setTeksti(eval("0") + x)
+        }
+
+        
+        
+
+        if (operandi1 === 0) { //operandi1 ei asetettu
+          setOperandi1(eval(teksti.valueOf()))
+          //console.log("operandi1: "+eval(teksti.valueOf()))    
+        }
+
+      }
+      else { //jotain syötetty jo aiemmin, pitää laskea välitulos
+                
+        if( ekaOperaattori !== "" ) {
+          setEkaOperaattori(x)
+        }
+
+        console.log("isNan result: "+isNaN(x))
+        
+        if( ! isNaN( x ) )
+        { //syötetty kaksi operaattoria peräkkäin, vain tuoreempi huomioidaan
+
+          //teksti.charAt(teksti.length - 1 ) 
+          //korvataan uusin syötetty operaattori vanhalla
+          setTeksti(eval( teksti.substring(0, teksti.length -2 ) + x ))
+          
+          return
+        }
+        else {
+        
+          setTeksti(eval(teksti) + x)
+          //setTeksti(teksti+x)  
+        }
+        
+      }
+
+    }
+    else if (x === "=") {
+
+      setEkaOperaattori("")
       setTeksti(eval(teksti))
       return
     }
