@@ -26,7 +26,7 @@ function App() {
     else if (!isNaN(x)) { //jos syötetty nro
       console.log(x)
 
-      if( ekaOperaattori !== "" ) {
+      if (ekaOperaattori !== "") {
         setOperandi2(true)
       }
     }
@@ -40,7 +40,7 @@ function App() {
         //tähän pitäisi huomioida myös se case, että syötetty operandi+operaattori, mutta tän perään tulee
         //taas operaattori syöte ->täs cases pitäis vanha operaattori korvata uusimmal painetulla
 
-        if(  ekaOperaattori === "" ) {
+        if (ekaOperaattori === "") {
           setEkaOperaattori(x)
           setTeksti(eval("0") + x)
         }
@@ -52,46 +52,47 @@ function App() {
 
       }
       else { //jotain syötetty jo aiemmin, pitää laskea välitulos
-        
-        
 
-        if( ekaOperaattori === "" ) {
+
+
+        if (ekaOperaattori === "") {
           setEkaOperaattori(x)
           //console.log("isNan result: "+isNaN(x) + ", ekaoperaattori: "+ekaOperaattori)
         }
 
-        console.log("isNan result: "+isNaN(x) + ", ekaoperaattori: "+ekaOperaattori+
-        ", operandi2: "+ operandi2)
+        console.log("isNan result: " + isNaN(x) + ", ekaoperaattori: " + ekaOperaattori +
+          ", operandi2: " + operandi2)
 
-        if( ekaOperaattori !== "" &&
-        ! operandi2 )
-        { //syötetty kaksi operaattoria peräkkäin, vain tuoreempi huomioidaan
+        if (ekaOperaattori !== "" &&
+          !operandi2) { //syötetty kaksi operaattoria peräkkäin, vain tuoreempi huomioidaan
 
           //teksti.charAt(teksti.length - 1 ) 
           //korvataan uusin syötetty operaattori vanhalla
-          setTeksti( teksti.substring(0, teksti.length - 1 ) + x )
+          setTeksti(teksti.substring(0, teksti.length - 1) + x)
           setEkaOperaattori(x)
           setOperandi2(false)
 
           return
         }
         else {
-        
-          setTeksti(eval( teksti ) + x)
+
+          setTeksti(eval(teksti) + x)
           setEkaOperaattori(x)
           setOperandi2(false)
 
           return
           //setTeksti(teksti+x)  
         }
-        
+
       }
 
     }
     else if (x === "=") {
 
-      setEkaOperaattori("")
-      setTeksti(eval(teksti))
+      if (operandi2) {
+        setEkaOperaattori("")
+        setTeksti(eval(teksti))
+      }
       return
     }
     setTeksti(teksti + x)
