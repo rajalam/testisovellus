@@ -10,13 +10,13 @@ function reducer(state, action) {
             return { ...state, vitsinNoutoAloitettu: true, haeUuttaDataa: false }
         case 'VITSI_NOUDETTU':
             console.log("vitsi noudettu")
-            return { ...state, vitsi: action.payload, haeUuttaDataa: false }           
+            return { ...state, vitsi: action.payload, haeUuttaDataa: false }
         case 'VITSIN_NOUTO_EPÄONNISTUI':
             console.log("datan nouto epäonnistui")
             return { ...state, vitsinNoutoEpäonnistui: true, vitsinNoutoAloitettu: false }
         case 'NOUDA_VITSI':
             console.log("noudetaan vitsiä")
-            
+            //setVitsiTimer = true
             return { ...state, haeUuttaDataa: true }
         case 'YYYY':
         default:
@@ -31,10 +31,14 @@ function AppChuckNorris() {
         haeUuttaDataa: false
     });
 
+    //vitsiTimer alustus
+    const [vitsiTimer, setVitsiTimer] = useState(-1)
+
+
     useEffect(() => {
+
         async function haeDataa() {
             //let result = await axios('https://api.huuto.net/1.1/categories');
-
 
             try {
                 dispatch({ type: 'VITSIN_NOUTO_ALOITETTU' })
@@ -53,10 +57,28 @@ function AppChuckNorris() {
 
             }
         }
-        if (appData.haeUuttaDataa) { //haetaan vain kun uutta tietoa tilattu
+
+        if (vitsiTimer > -1) { //jos timer käynnissä
+            clearTimeout(vitsiTimer)
+        }
+    
+
+        //setVitsiTimer pitäis muuttaa siten, että se tulee kutsutuksi vain silloin kun on max
+        //1 timer pyörimässä ettei voi monta timeria pyöriä yhtäaikaa->tarvitaanko sitä ehtoa?
+        setVitsiTimer(setTimeout(() => {
+
+            console.log("setTimeout laukee, noudetaan vitsi")
+            dispatch({ type: 'NOUDA_VITSI'} )
+            
+
+        }, 10000
+        )
+        )
+
+        if (appData.haeUuttaDataa) { //haetaan vain kun uutta tietoa tilattu || ajastin lauennut
             haeDataa();
         }
-    }, [appData.haeUuttaDataa]);
+    }, [appData.haeUuttaDataa ]);
 
     return (
         <div>
