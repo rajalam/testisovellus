@@ -10,13 +10,13 @@ function reducer(state, action) {
             return { ...state, vitsinNoutoAloitettu: true, haeUuttaDataa: false }
         case 'VITSI_NOUDETTU':
             console.log("vitsi noudettu")
-            return { ...state, vitsi: action.payload, haeUuttaDataa: false /* ,kategorioidenNoutoAloitettu:false */ }
+            return { ...state, vitsi: action.payload, haeUuttaDataa: false }           
         case 'VITSIN_NOUTO_EPÄONNISTUI':
             console.log("datan nouto epäonnistui")
             return { ...state, vitsinNoutoEpäonnistui: true, vitsinNoutoAloitettu: false }
         case 'NOUDA_VITSI':
-            console.log("näytetään vitsi", action.payload)
-            //haeDataa();
+            console.log("noudetaan vitsiä")
+            
             return { ...state, haeUuttaDataa: true }
         case 'YYYY':
         default:
